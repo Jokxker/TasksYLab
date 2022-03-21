@@ -1,0 +1,4 @@
+aleks - 10
+loki - 13
+tor - 22
+vara - 3

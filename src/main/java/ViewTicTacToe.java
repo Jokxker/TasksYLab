@@ -8,8 +8,8 @@ public class ViewTicTacToe {
     private JButton buttonStart;
     private JButton buttonPlayAgain;
     private JButton buttonNotPlay;
-    private JButton buttonXml;
-    private JButton buttonJson;
+    private JButton buttonSave;
+    private JTextField textSave;
     private JTextField textName1;
     private JTextField textName2;
 
@@ -41,12 +41,12 @@ public class ViewTicTacToe {
         return buttonNotPlay;
     }
 
-    public JButton getButtonXml() {
-        return buttonXml;
+    public JButton getButtonSave() {
+        return buttonSave;
     }
 
-    public JButton getButtonJson() {
-        return buttonJson;
+    public JTextField getTextSave() {
+        return textSave;
     }
 
     public void start() {
@@ -94,12 +94,12 @@ public class ViewTicTacToe {
         frame.getContentPane().removeAll();
         panel = new JPanel();
         panel.setPreferredSize(new Dimension(800, 800));
-        JLabel labelSave = new JLabel("How to save the game? ");
-        buttonXml = new JButton("XML");
-        buttonJson = new JButton("JSON");
+        JLabel labelSave = new JLabel("Enter - how to save the game? xml or json? ");
+        textSave = new JTextField(7);
+        buttonSave = new JButton("Save");
         panel.add(labelSave);
-        panel.add(buttonXml);
-        panel.add(buttonJson);
+        panel.add(textSave);
+        panel.add(buttonSave);
         frame.getContentPane().add(panel);
         frame.getContentPane().revalidate();
     }

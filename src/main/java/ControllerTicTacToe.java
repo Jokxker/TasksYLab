@@ -10,6 +10,7 @@ public class ControllerTicTacToe {
     private String winOrDraw;
     private final String path = "src/main/resources/";
     private int numFile = 0;
+    private FileOfGameTicTacToe fileOfGameTicTacToe;
 
     public ControllerTicTacToe (ModelTicTacToe model, ViewTicTacToe view) {
         this.model = model;
@@ -42,28 +43,15 @@ public class ControllerTicTacToe {
                 if (!winOrDraw.equals(" ")) {
                     String output = path + playerX.getName() + "-VS-" + playerO.getName() + ++numFile;
                     view.saveGame();
-                    view.getButtonXml().addActionListener((xml) -> {
-                        FileOfGameTicTacToe fileOfGameTicTacToe = new XMLTicTacToe();
+                    view.getButtonSave().addActionListener((xml) -> {
+                        if (view.getTextSave().getText().toLowerCase().equals("xml")) {
+                            fileOfGameTicTacToe = new XMLTicTacToe();
+                        } else if (view.getTextSave().getText().toLowerCase().equals("json")) {
+                            fileOfGameTicTacToe = new JSONTicTacToe();
+                        }
                         try {
                             fileOfGameTicTacToe.write(output, playerX, playerO, winOrDraw);
                             fileOfGameTicTacToe.read(output);
-                        } catch (IOException | XMLStreamException ex) {
-                            ex.printStackTrace();
-                        }
-                        if (!winOrDraw.equals("Draw!")) model.setRating(winOrDraw);
-                        model.writeGamers();
-                        view.theEndWin(model.getGamers(), winOrDraw);
-                        view.getButtonPlayAgain().addActionListener((playAgain) -> {
-                            view.getFrame().dispose();
-                            startGame();
-                        });
-                        view.getButtonNotPlay().addActionListener((notPlay) -> view.getFrame().dispose());
-                    });
-                    view.getButtonJson().addActionListener((json) -> {
-                        FileOfGameTicTacToe fileOfGameTicTacToe2 = new JSONTicTacToe();
-                        try {
-                            fileOfGameTicTacToe2.write(output, playerX, playerO, winOrDraw);
-                            fileOfGameTicTacToe2.read(output);
                         } catch (XMLStreamException | IOException ex) {
                             ex.printStackTrace();
                         }
@@ -76,7 +64,6 @@ public class ControllerTicTacToe {
                         });
                         view.getButtonNotPlay().addActionListener((notPlay) -> view.getFrame().dispose());
                     });
-
                 }
             }));
         });

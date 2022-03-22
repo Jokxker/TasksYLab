@@ -144,7 +144,7 @@ public class XMLTicTacToe implements FileOfGameTicTacToe {
                                 String id = reader.getAttributeValue(null, "id");
                                 String name = reader.getAttributeValue(null, "name");
                                 String symbol = reader.getAttributeValue(null, "symbol");
-                                System.out.println("Player " + id + " -> " + name + " is winner as " + "'" + symbol + "'" + "!");
+                                System.out.println("Player " + id + " -> " + name + " is winner as '" + symbol + "'!");
                             }
                         }
                     }

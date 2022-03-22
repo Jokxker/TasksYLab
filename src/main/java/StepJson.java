@@ -13,4 +13,16 @@ public class StepJson {
         this.playerId = String.valueOf(playerId);
         this.text = String.valueOf(text);
     }
+
+    public String getNum() {
+        return num;
+    }
+
+    public String getPlayerId() {
+        return playerId;
+    }
+
+    public String getText() {
+        return text;
+    }
 }

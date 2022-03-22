@@ -2,12 +2,12 @@
   "Player": [
     {
       "_id": "1",
-      "_name": "loki",
+      "_name": "aleks",
       "_symbol": "X"
     },
     {
       "_id": "2",
-      "_name": "tor",
+      "_name": "vara",
       "_symbol": "O"
     }
   ],
@@ -45,7 +45,7 @@
   ],
   "GameResultWinner": {
     "_id": "2",
-    "_name": "tor",
+    "_name": "vara",
     "_symbol": "O"
   }
 }

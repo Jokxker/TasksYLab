@@ -8,7 +8,7 @@
     {
       "_id": "2",
       "_name": "tor",
-      "_symbol": "O"
+      "_symbol": "0"
     }
   ],
   "Steps": [
@@ -46,6 +46,6 @@
   "GameResultWinner": {
     "_id": "2",
     "_name": "tor",
-    "_symbol": "O"
+    "_symbol": "0"
   }
 }

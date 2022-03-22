@@ -1,12 +1,6 @@
 import javax.xml.stream.XMLStreamException;
-import javax.xml.transform.TransformerException;
 import java.awt.*;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class ControllerTicTacToe {
@@ -44,29 +38,45 @@ public class ControllerTicTacToe {
                 }
                 button.setFont(new Font("Helvetica", Font.PLAIN, 250));
                 whoStep++;
+
                 if (!winOrDraw.equals(" ")) {
-                    try {
-
-                        String output = path + playerX.getName() + "-VS-" + playerO.getName() + ++numFile;
-
+                    String output = path + playerX.getName() + "-VS-" + playerO.getName() + ++numFile;
+                    view.saveGame();
+                    view.getButtonXml().addActionListener((xml) -> {
                         FileOfGameTicTacToe fileOfGameTicTacToe = new XMLTicTacToe();
-                        fileOfGameTicTacToe.write(output, playerX, playerO, winOrDraw);
-
-                        FileOfGameTicTacToe fileOfGameTicTacToe2 = new JSONTicTacToe();
-                        fileOfGameTicTacToe2.write(output, playerX, playerO, winOrDraw);
-
-                        fileOfGameTicTacToe.read(output);
-                    } catch (XMLStreamException | IOException ex) {
-                        ex.printStackTrace();
-                    }
-                    if (!winOrDraw.equals("Draw!")) model.setRating(winOrDraw);
-                    model.writeGamers();
-                    view.theEndWin(model.getGamers(), winOrDraw);
-                    view.getButtonPlayAgain().addActionListener((playAgain) -> {
-                        view.getFrame().dispose();
-                        startGame();
+                        try {
+                            fileOfGameTicTacToe.write(output, playerX, playerO, winOrDraw);
+                            fileOfGameTicTacToe.read(output);
+                        } catch (IOException | XMLStreamException ex) {
+                            ex.printStackTrace();
+                        }
+                        if (!winOrDraw.equals("Draw!")) model.setRating(winOrDraw);
+                        model.writeGamers();
+                        view.theEndWin(model.getGamers(), winOrDraw);
+                        view.getButtonPlayAgain().addActionListener((playAgain) -> {
+                            view.getFrame().dispose();
+                            startGame();
+                        });
+                        view.getButtonNotPlay().addActionListener((notPlay) -> view.getFrame().dispose());
                     });
-                    view.getButtonNotPlay().addActionListener((notPlay) -> view.getFrame().dispose());
+                    view.getButtonJson().addActionListener((json) -> {
+                        FileOfGameTicTacToe fileOfGameTicTacToe2 = new JSONTicTacToe();
+                        try {
+                            fileOfGameTicTacToe2.write(output, playerX, playerO, winOrDraw);
+                            fileOfGameTicTacToe2.read(output);
+                        } catch (XMLStreamException | IOException ex) {
+                            ex.printStackTrace();
+                        }
+                        if (!winOrDraw.equals("Draw!")) model.setRating(winOrDraw);
+                        model.writeGamers();
+                        view.theEndWin(model.getGamers(), winOrDraw);
+                        view.getButtonPlayAgain().addActionListener((playAgain) -> {
+                            view.getFrame().dispose();
+                            startGame();
+                        });
+                        view.getButtonNotPlay().addActionListener((notPlay) -> view.getFrame().dispose());
+                    });
+
                 }
             }));
         });

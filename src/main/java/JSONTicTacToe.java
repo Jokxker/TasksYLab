@@ -57,6 +57,10 @@ public class JSONTicTacToe implements FileOfGameTicTacToe{
             }
             System.out.println();
         }
-        System.out.println("Player " + json.getWinner().getID() + " -> " + json.getWinner().getName() + " is winner as '" + json.getWinner().getSymbol() + "'!");
+        if (json.getWinner() == null) {
+            System.out.println("Draw!");
+        } else {
+            System.out.println("Player " + json.getWinner().getID() + " -> " + json.getWinner().getName() + " is winner as '" + json.getWinner().getSymbol() + "'!");
+        }
     }
 }

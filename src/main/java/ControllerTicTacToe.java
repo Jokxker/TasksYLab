@@ -51,6 +51,12 @@ public class ControllerTicTacToe {
                 return new Gson().toJson(new StandardResponse(StatusResponse.OK, new Gson().toJsonTree(Gameplay.end(playerX, player0, winOrDraw))));
             }
         });
+        delete("/gameplay", (request, response) -> {
+            model.deleteGamer(request.queryParams("name"));
+            model.writeGamers();
+            model.downloadGamers();
+           return new Gson().toJson(new StandardResponse(StatusResponse.OK));
+        });
 
         after((req, res) -> res.type(JSON_MIME_TYPE));
         Runtime.getRuntime().addShutdownHook(new Thread(Spark::stop));

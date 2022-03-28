@@ -7,6 +7,10 @@ public class ModelTicTacToe {
     private final String pathRating = "src/main/resources/rating.txt";
     private char[][] fieldGame;
 
+    public void deleteGamer(String key) {
+        gamers.remove(key);
+    }
+
     public String getGamers() {
         StringBuilder gamersString = new StringBuilder();
         for (Map.Entry<String, Integer> entry : gamers.entrySet()) {

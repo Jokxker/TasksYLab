@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class JSONTicTacToe implements FileOfGameTicTacToe{
     @Override
     public void write(String outPath, PlayerTicTacToe playerX, PlayerTicTacToe player0, String winner) throws IOException {
-        PlayerTicTacToe win = null;
+        PlayerTicTacToe win = new PlayerTicTacToe("Draw!", null, null);
         if (winner.equals(playerX.getName())) {
             win = playerX;
         } else if (winner.equals(player0.getName())) {
@@ -24,7 +24,7 @@ public class JSONTicTacToe implements FileOfGameTicTacToe{
             }
         }
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        GameJson json = new GameJson(playerX, player0, steps, win);
+        Gameplay json = new Gameplay(playerX, player0, steps, win);
         BufferedWriter writer = new BufferedWriter(new FileWriter(outPath + ".json"));
         gson.toJson(json, writer);
         writer.flush();
@@ -37,7 +37,7 @@ public class JSONTicTacToe implements FileOfGameTicTacToe{
         char step = ' ';
         Gson gson = new Gson();
         Reader reader = new FileReader(outPath + ".json");
-        GameJson json = gson.fromJson(reader, GameJson.class);
+        Gameplay json = gson.fromJson(reader, Gameplay.class);
         for (StepJson s : json.getSteps()) {
             if (s.getPlayerId().equals("1")) step = 'X';
             if (s.getPlayerId().equals("2")) step = '0';
@@ -57,7 +57,7 @@ public class JSONTicTacToe implements FileOfGameTicTacToe{
             }
             System.out.println();
         }
-        if (json.getWinner() == null) {
+        if (json.getWinner().getSymbol() == null) {
             System.out.println("Draw!");
         } else {
             System.out.println("Player " + json.getWinner().getID() + " -> " + json.getWinner().getName() + " is winner as '" + json.getWinner().getSymbol() + "'!");

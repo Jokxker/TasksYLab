@@ -3,6 +3,9 @@ public class TicTacToe {
         ModelTicTacToe model = new ModelTicTacToe();
         ViewTicTacToe view = new ViewTicTacToe();
         ControllerTicTacToe controller = new ControllerTicTacToe(model, view);
-        controller.startGame();
+        // Running desktop
+//        controller.startGame();
+        // Running Rest Api
+        controller.startGameApi();
     }
 }

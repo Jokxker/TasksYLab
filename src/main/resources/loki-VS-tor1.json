@@ -35,27 +35,22 @@
     {
       "_num": "5",
       "_playerId": "1",
-      "__text": "7"
+      "__text": "4"
     },
     {
       "_num": "6",
       "_playerId": "2",
-      "__text": "4"
+      "__text": "8"
     },
     {
       "_num": "7",
       "_playerId": "1",
-      "__text": "6"
-    },
-    {
-      "_num": "8",
-      "_playerId": "2",
-      "__text": "8"
-    },
-    {
-      "_num": "9",
-      "_playerId": "1",
-      "__text": "9"
+      "__text": "7"
     }
-  ]
+  ],
+  "GameResultWinner": {
+    "_id": "1",
+    "_name": "loki",
+    "_symbol": "X"
+  }
 }

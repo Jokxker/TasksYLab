@@ -8,10 +8,10 @@ public class PlayerTicTacToe {
     @SerializedName("_name")
     private final String name;
     @SerializedName("_symbol")
-    private final char symbol;
+    private final Character symbol;
     private transient final ArrayList<Integer> steps = new ArrayList<>();
 
-    public PlayerTicTacToe(String name, char symbol, String ID) {
+    public PlayerTicTacToe(String name, Character symbol, String ID) {
         this.ID = ID;
         this.name = name;
         this.symbol = symbol;
@@ -21,7 +21,7 @@ public class PlayerTicTacToe {
         return name;
     }
 
-    public char getSymbol() {
+    public Character getSymbol() {
         return symbol;
     }
 

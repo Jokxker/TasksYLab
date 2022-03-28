@@ -12,12 +12,15 @@ public class ControllerTicTacToe {
     public static final String JSON_MIME_TYPE = "application/json";
     private static final String SERVER_HOST = "127.0.0.1";
     private static final int SERVER_PORT = 8080;
+
     private final ModelTicTacToe model;
     private final ViewTicTacToe view;
     private int whoStep;
+
     private String winOrDraw;
     private final String path = "src/main/resources/";
     private int numFile = 0;
+
     private FileOfGameTicTacToe fileOfGameTicTacToe;
     private PlayerTicTacToe playerX;
     private PlayerTicTacToe player0;
@@ -30,19 +33,19 @@ public class ControllerTicTacToe {
     public void startGameApi() {
         ipAddress(SERVER_HOST);
         port(SERVER_PORT);
-        get("/gameplay", (request, response) -> {
+        get("/gameplay", (request, response) -> { // Возвращаем рейтинг игроков
             model.downloadGamers();
            return new Gson().toJson(new StandardResponse(StatusResponse.OK, new Gson().toJsonTree(model.getGamers())));
         });
-        post("/gameplay", (request, response) -> {
+        post("/gameplay", (request, response) -> { // Добавляем игроков
             playerX = new PlayerTicTacToe(request.queryParams("nameX"), 'X', "1");
             player0 = new PlayerTicTacToe(request.queryParams("name0"), '0', "2");
             model.setGamer(playerX.getName(), player0.getName());
             model.downloadGamers();
             return new Gson().toJson(new StandardResponse(StatusResponse.OK));
         });
-        put("/gameplay/game", (request, response) -> {
-            winOrDraw = model.changeField(request.queryParams("step"), request.queryParams("name").equals(playerX.getName()) ? playerX : player0);
+        put("/gameplay/game", (request, response) -> { // Редактируем игровое поле
+            winOrDraw = model.changeField(AdapterGameField.adapter(request.queryParams("step")), request.queryParams("name").equals(playerX.getName()) ? playerX : player0);
             if (winOrDraw.equals(" ")) {
                 return new Gson().toJson(new StandardResponse(StatusResponse.OK));
             } else {
@@ -51,7 +54,7 @@ public class ControllerTicTacToe {
                 return new Gson().toJson(new StandardResponse(StatusResponse.OK, new Gson().toJsonTree(Gameplay.end(playerX, player0, winOrDraw))));
             }
         });
-        delete("/gameplay", (request, response) -> {
+        delete("/gameplay", (request, response) -> { // Удаляем игрока по имени
             model.deleteGamer(request.queryParams("name"));
             model.writeGamers();
             model.downloadGamers();
@@ -66,13 +69,14 @@ public class ControllerTicTacToe {
         whoStep = 1;
         winOrDraw = " ";
         view.start();
-        view.getButtonStart().addActionListener((e) -> {
+        view.getButtonStart().addActionListener((e) -> { // Добавляем игроков
             playerX = new PlayerTicTacToe(view.getTextName1(), 'X', "1");
             player0 = new PlayerTicTacToe(view.getTextName2(), 'O', "2");
             model.setGamer(playerX.getName(), player0.getName());
             model.downloadGamers();
             view.gaming();
-            Arrays.stream(view.getGameField()).toList().forEach((button) -> button.addActionListener((event) -> {
+            Arrays.stream(view.getGameField()).toList().forEach((button) // Редактируем игровое поле
+                    -> button.addActionListener((event) -> {
                 if (whoStep % 2 != 0) {
                     button.setText("X");
                     button.setEnabled(false);
@@ -85,7 +89,7 @@ public class ControllerTicTacToe {
                 button.setFont(new Font("Helvetica", Font.PLAIN, 250));
                 whoStep++;
 
-                if (!winOrDraw.equals(" ")) {
+                if (!winOrDraw.equals(" ")) { // Выяняем исход игры и записываем ход игры в файл
                     String output = path + playerX.getName() + "-VS-" + player0.getName() + ++numFile;
                     view.saveGame();
                     view.getButtonSave().addActionListener((xml) -> {

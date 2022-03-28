@@ -2,4 +2,4 @@ aleks - 15
 danil - 2
 loki - 0
 tor - 28
-vara - 10
+vara - 11

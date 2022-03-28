@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class XMLTicTacToe implements FileOfGameTicTacToe {
+public class XMLTicTacToe implements FileOfGameTicTacToe { // Записываем и читаем - ход игры в xml формате
     public void write(String outPath, PlayerTicTacToe playerX, PlayerTicTacToe player0, String winner) throws XMLStreamException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         XMLOutputFactory output = XMLOutputFactory.newInstance();

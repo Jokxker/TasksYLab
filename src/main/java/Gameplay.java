@@ -18,7 +18,7 @@ public class Gameplay {
         this.winner = winner;
     }
 
-    public static Gameplay end(PlayerTicTacToe playerX, PlayerTicTacToe player0, String winner) {
+    public static Gameplay end(PlayerTicTacToe playerX, PlayerTicTacToe player0, String winner) { // Создаем сущность - ход игры
         PlayerTicTacToe win = new PlayerTicTacToe("Draw!", null, null);
         if (winner.equals(playerX.getName())) {
             win = playerX;

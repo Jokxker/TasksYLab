@@ -4,7 +4,7 @@ import com.google.gson.GsonBuilder;
 import java.io.*;
 import java.util.ArrayList;
 
-public class JSONTicTacToe implements FileOfGameTicTacToe{
+public class JSONTicTacToe implements FileOfGameTicTacToe{ // Записываем и читаем - ход игры в json формате
     @Override
     public void write(String outPath, PlayerTicTacToe playerX, PlayerTicTacToe player0, String winner) throws IOException {
         PlayerTicTacToe win = new PlayerTicTacToe("Draw!", null, null);

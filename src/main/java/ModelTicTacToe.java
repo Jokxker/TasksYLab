@@ -11,7 +11,7 @@ public class ModelTicTacToe {
         gamers.remove(key);
     }
 
-    public String getGamers() {
+    public String getGamers() { // Получаем список всех игроков в виде строки
         StringBuilder gamersString = new StringBuilder();
         for (Map.Entry<String, Integer> entry : gamers.entrySet()) {
             gamersString.append(entry.getKey()).append(" - ").append(entry.getValue()).append(", ");
@@ -19,7 +19,7 @@ public class ModelTicTacToe {
         return String.valueOf(gamersString);
     }
 
-    public void downloadGamers() {
+    public void downloadGamers() { // Загружаем всех (кто уже играл) игроков из файла
         try(BufferedReader reader = new BufferedReader(new FileReader(pathRating))) {
             String s;
             while ((s = reader.readLine()) != null) {
@@ -32,7 +32,7 @@ public class ModelTicTacToe {
         }
     }
 
-    public void writeGamers() {
+    public void writeGamers() { // Записываем игроков в файл
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(pathRating))) {
             for (Map.Entry<String, Integer> entry : gamers.entrySet()) {
                 writer.write(entry.getKey() + " - " + entry.getValue() + "\n");
@@ -42,16 +42,16 @@ public class ModelTicTacToe {
         }
     }
 
-    public void setGamer(String name1, String name2) {
+    public void setGamer(String name1, String name2) { // Устанавливаем игроков играющих в данный момент
         gamers.put(name1, 0);
         gamers.put(name2, 0);
     }
 
-    public void setRating(String nameRating) {
+    public void setRating(String nameRating) { // Записываем +1 бал победителю
         gamers.put(nameRating, gamers.get(nameRating) + 1);
     }
 
-    public String changeField(String step, PlayerTicTacToe player) {
+    public String changeField(String step, PlayerTicTacToe player) { // Записываем ходы и выявляем победителя
         if (fieldGame == null) fieldGame = new char[3][3];
         int x = 0;
         int y = 0;
@@ -78,7 +78,7 @@ public class ModelTicTacToe {
             }
         }
         fieldGame[y][x] = player.getSymbol();
-        player.setSteps(Integer.parseInt(step));
+        player.setSteps(Integer.parseInt(step)); // Записываем ход каждому игроку
         int col = 0;
         int row = 0;
         int diag = 0;

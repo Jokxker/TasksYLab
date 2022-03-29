@@ -38,11 +38,19 @@ public class ControllerTicTacToe {
            return new Gson().toJson(new StandardResponse(StatusResponse.OK, new Gson().toJsonTree(model.getGamers())));
         });
         post("/gameplay", (request, response) -> { // Добавляем игроков
-            playerX = new PlayerTicTacToe(request.queryParams("nameX"), 'X', "1");
-            player0 = new PlayerTicTacToe(request.queryParams("name0"), '0', "2");
+            String nameX = request.queryParams("nameX");
+            String name0 = request.queryParams("name0");
+            if (nameX == null || name0 == null) {
+                return new Gson().toJson(new StandardResponse(StatusResponse.BAD_REQUEST));
+            }
+            playerX = new PlayerTicTacToe(nameX, 'X', "1");
+            player0 = new PlayerTicTacToe(name0, '0', "2");
             model.setGamer(playerX.getName(), player0.getName());
-            model.downloadGamers();
-            return new Gson().toJson(new StandardResponse(StatusResponse.OK));
+            if (model.getGamers().contains(playerX.getName()) && model.getGamers().contains(player0.getName())) {
+                model.downloadGamers();
+                return new Gson().toJson(new StandardResponse(StatusResponse.OK));
+            }
+            return new Gson().toJson(new StandardResponse(StatusResponse.INTERNAL_SERVER_ERROR));
         });
         put("/gameplay/game", (request, response) -> { // Редактируем игровое поле
             winOrDraw = model.changeField(AdapterGameField.adapter(request.queryParams("step")), request.queryParams("name").equals(playerX.getName()) ? playerX : player0);
@@ -55,10 +63,18 @@ public class ControllerTicTacToe {
             }
         });
         delete("/gameplay", (request, response) -> { // Удаляем игрока по имени
-            model.deleteGamer(request.queryParams("name"));
-            model.writeGamers();
-            model.downloadGamers();
-           return new Gson().toJson(new StandardResponse(StatusResponse.OK));
+            String name = request.queryParams("name");
+            if (model.getGamers().contains(name)) {
+                model.deleteGamer(name);
+                if (!model.getGamers().contains(name)) {
+                    model.writeGamers();
+                    model.downloadGamers();
+                    return new Gson().toJson(new StandardResponse(StatusResponse.OK));
+                } else {
+                    return new Gson().toJson(new StandardResponse(StatusResponse.INTERNAL_SERVER_ERROR));
+                }
+            }
+            return new Gson().toJson(new StandardResponse(StatusResponse.BAD_REQUEST));
         });
 
         after((req, res) -> res.type(JSON_MIME_TYPE));

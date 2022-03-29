@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.is;
 
 public class TestRestApi {
     @Test
-    public void testStartGameApiGet() {
+    public void testStartGameApiGet() { // Тестируем ответ, читаем файл рейтинга, который должен быть в ответе
         RestAssured.baseURI = "http://localhost:8080/gameplay";
         StringBuilder s = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("src/main/resources/rating.txt")))) {

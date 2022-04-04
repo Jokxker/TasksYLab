@@ -11,6 +11,6 @@ public class TestRestApiPostBadRequest {
         given().
                 param("name", "aleks").
                 param("name0", "loki")
-                .when().request("POST").then().body("status", is("BAD_REQUEST"));
+                .when().request("POST").then().statusCode(500);
     }
 }

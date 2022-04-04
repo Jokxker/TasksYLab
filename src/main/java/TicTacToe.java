@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+
 public class TicTacToe {
     public static void main(String[] args) {
         ModelTicTacToe model = new ModelTicTacToe();

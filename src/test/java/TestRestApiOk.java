@@ -11,6 +11,6 @@ public class TestRestApiOk {
         given().
                 param("nameX", "aleks").
                 param("name0", "loki")
-                .when().request("POST").then().body("status", is("OK"));
+                .when().request("POST").then().statusCode(200);
     }
 }

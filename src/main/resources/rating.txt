@@ -1,5 +1,2 @@
-aleks - 15
-danil - 2
+aleks - 1
 loki - 0
-tor - 28
-vara - 11

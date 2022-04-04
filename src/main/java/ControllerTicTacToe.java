@@ -4,12 +4,14 @@ import spark.Spark;
 import javax.xml.stream.XMLStreamException;
 import java.awt.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import static spark.Spark.*;
 
 public class ControllerTicTacToe {
-    public static final String JSON_MIME_TYPE = "application/json";
+    // данные для запуска сервера
+    private static final String JSON_MIME_TYPE = "application/json";
     private static final String SERVER_HOST = "127.0.0.1";
     private static final int SERVER_PORT = 8080;
 
@@ -30,7 +32,22 @@ public class ControllerTicTacToe {
         this.view = view;
     }
 
+    // создание таблиц в базе данных
+    private static void install() throws SQLException {
+
+    }
+    // удаление таблиц из базы данных
+    private static void uninstall() throws SQLException {
+
+    }
+    // нормальная работа приложения
+    private static void operate() throws SQLException {
+
+    }
+
     public void startGameApi() {
+        DatabaseH2 dbH2 = new DatabaseH2();
+        dbH2.createTable();
         ipAddress(SERVER_HOST);
         port(SERVER_PORT);
         get("/gameplay", (request, response) -> { // Возвращаем рейтинг игроков
@@ -41,23 +58,28 @@ public class ControllerTicTacToe {
             String nameX = request.queryParams("nameX");
             String name0 = request.queryParams("name0");
             if (nameX == null || name0 == null) {
-                return new Gson().toJson(new StandardResponse(StatusResponse.BAD_REQUEST));
+                response.status(StatusResponse.BAD_REQUEST.getStatus());
+            } else {
+                playerX = new PlayerTicTacToe(nameX, 'X', "1");
+                player0 = new PlayerTicTacToe(name0, '0', "2");
+                dbH2.addPlayer(playerX.getName(), player0.getName());
+                dbH2.show();
+                model.setGamer(playerX.getName(), player0.getName());
+                if (!model.getGamers().contains(playerX.getName()) || !model.getGamers().contains(player0.getName())) {
+                    model.downloadGamers();
+                    response.status(StatusResponse.INTERNAL_SERVER_ERROR.getStatus());
+                }
             }
-            playerX = new PlayerTicTacToe(nameX, 'X', "1");
-            player0 = new PlayerTicTacToe(name0, '0', "2");
-            model.setGamer(playerX.getName(), player0.getName());
-            if (model.getGamers().contains(playerX.getName()) && model.getGamers().contains(player0.getName())) {
-                model.downloadGamers();
-                return new Gson().toJson(new StandardResponse(StatusResponse.OK));
-            }
-            return new Gson().toJson(new StandardResponse(StatusResponse.INTERNAL_SERVER_ERROR));
+            return new Gson().toJson(response.status());
         });
-        put("/gameplay/game", (request, response) -> { // Редактируем игровое поле
+        put("/gameplay", (request, response) -> { // Редактируем игровое поле
             winOrDraw = model.changeField(AdapterGameField.adapter(request.queryParams("step")), request.queryParams("name").equals(playerX.getName()) ? playerX : player0);
             if (winOrDraw.equals(" ")) {
                 return new Gson().toJson(new StandardResponse(StatusResponse.OK));
             } else {
-                if (!winOrDraw.equals("Draw!")) model.setRating(winOrDraw);
+                if (!winOrDraw.equals("Draw!"))
+                    dbH2.addPoint(winOrDraw);
+                    model.setRating(winOrDraw);
                 model.writeGamers();
                 return new Gson().toJson(new StandardResponse(StatusResponse.OK, new Gson().toJsonTree(Gameplay.end(playerX, player0, winOrDraw))));
             }
